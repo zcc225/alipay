@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccpro.dao.SkuMapper" >
+  <resultMap id="BaseResultMap" type="com.zccpro.domain.Sku" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="color_id" property="colorId" jdbcType="BIGINT" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="delive_fee" property="deliveFee" jdbcType="REAL" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="upper_limit" property="upperLimit" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="sku_img" property="skuImg" jdbcType="VARCHAR" />
+    <result column="sku_sort" property="skuSort" jdbcType="INTEGER" />
+    <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
+    <result column="market_price" property="marketPrice" jdbcType="REAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="sku_status" property="skuStatus" jdbcType="BIT" />
+    <result column="sku_type" property="skuType" jdbcType="BIT" />
+    <result column="sales" property="sales" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, color_id, size, delive_fee, price, stock, upper_limit, location, 
+    sku_img, sku_sort, sku_name, market_price, create_time, update_time, create_user_id, 
+    update_user_id, sku_status, sku_type, sales
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_sku
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_sku
+    where product_id = #{id,jdbcType=BIGINT} order by price desc
+  </select>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bbs_sku
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <delete id="deleteByProIds"  >
+    delete from bbs_sku
+    where product_id in
+    <foreach collection="array" index="index" item="ids" open="(" separator="," close=")">
+    #{ids}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.zccpro.domain.Sku" >
+    insert into bbs_sku (id, product_id, color_id, 
+      size, delive_fee, price, stock, 
+      upper_limit, location, sku_img, 
+      sku_sort, sku_name, market_price, 
+      create_time, update_time, create_user_id, 
+      update_user_id, sku_status, sku_type, 
+      sales)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{colorId,jdbcType=BIGINT}, 
+      #{size,jdbcType=VARCHAR}, #{deliveFee,jdbcType=REAL}, #{price,jdbcType=REAL}, #{stock,jdbcType=INTEGER}, 
+      #{upperLimit,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{skuImg,jdbcType=VARCHAR}, 
+      #{skuSort,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, #{marketPrice,jdbcType=REAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{updateUserId,jdbcType=VARCHAR}, #{skuStatus,jdbcType=BIT}, #{skuType,jdbcType=BIT}, 
+      #{sales,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zccpro.domain.Sku" >
+    insert into bbs_sku
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="colorId != null" >
+        color_id,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="deliveFee != null" >
+        delive_fee,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="upperLimit != null" >
+        upper_limit,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="skuImg != null" >
+        sku_img,
+      </if>
+      <if test="skuSort != null" >
+        sku_sort,
+      </if>
+      <if test="skuName != null" >
+        sku_name,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id,
+      </if>
+      <if test="skuStatus != null" >
+        sku_status,
+      </if>
+      <if test="skuType != null" >
+        sku_type,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="colorId != null" >
+        #{colorId,jdbcType=BIGINT},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveFee != null" >
+        #{deliveFee,jdbcType=REAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="upperLimit != null" >
+        #{upperLimit,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="skuImg != null" >
+        #{skuImg,jdbcType=VARCHAR},
+      </if>
+      <if test="skuSort != null" >
+        #{skuSort,jdbcType=INTEGER},
+      </if>
+      <if test="skuName != null" >
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null" >
+        #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStatus != null" >
+        #{skuStatus,jdbcType=BIT},
+      </if>
+      <if test="skuType != null" >
+        #{skuType,jdbcType=BIT},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zccpro.domain.Sku" >
+    update bbs_sku
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="colorId != null" >
+        color_id = #{colorId,jdbcType=BIGINT},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveFee != null" >
+        delive_fee = #{deliveFee,jdbcType=REAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="upperLimit != null" >
+        upper_limit = #{upperLimit,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="skuImg != null" >
+        sku_img = #{skuImg,jdbcType=VARCHAR},
+      </if>
+      <if test="skuSort != null" >
+        sku_sort = #{skuSort,jdbcType=INTEGER},
+      </if>
+      <if test="skuName != null" >
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStatus != null" >
+        sku_status = #{skuStatus,jdbcType=BIT},
+      </if>
+      <if test="skuType != null" >
+        sku_type = #{skuType,jdbcType=BIT},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zccpro.domain.Sku" >
+    update bbs_sku
+    set product_id = #{productId,jdbcType=BIGINT},
+      color_id = #{colorId,jdbcType=BIGINT},
+      size = #{size,jdbcType=VARCHAR},
+      delive_fee = #{deliveFee,jdbcType=REAL},
+      price = #{price,jdbcType=REAL},
+      stock = #{stock,jdbcType=INTEGER},
+      upper_limit = #{upperLimit,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      sku_img = #{skuImg,jdbcType=VARCHAR},
+      sku_sort = #{skuSort,jdbcType=INTEGER},
+      sku_name = #{skuName,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=REAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      update_user_id = #{updateUserId,jdbcType=VARCHAR},
+      sku_status = #{skuStatus,jdbcType=BIT},
+      sku_type = #{skuType,jdbcType=BIT},
+      sales = #{sales,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

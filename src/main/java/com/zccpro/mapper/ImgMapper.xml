@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccpro.dao.ImgMapper" >
+  <resultMap id="BaseResultMap" type="com.zccpro.domain.Img" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="is_def" property="isDef" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, url, is_def
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_img
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	  select 
+	  <include refid="Base_Column_List" />
+	  from bbs_img
+	  where product_id = #{productId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bbs_img
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByProIds"  >
+   delete from bbs_img
+    where product_id in
+    <foreach collection="array" index="index" item="ids" open="(" separator="," close=")">
+    #{ids}
+    </foreach>
+  </delete>
+  <delete id="deleteByproductId" parameterType="java.lang.Long" >
+    delete from bbs_img
+    where  product_id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zccpro.domain.Img" >
+    insert into bbs_img (id, product_id, url, 
+      is_def)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
+      #{isDef,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zccpro.domain.Img" >
+    insert into bbs_img
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="isDef != null" >
+        is_def,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDef != null" >
+        #{isDef,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zccpro.domain.Img" >
+    update bbs_img
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDef != null" >
+        is_def = #{isDef,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zccpro.domain.Img" >
+    update bbs_img
+    set product_id = #{productId,jdbcType=BIGINT},
+      url = #{url,jdbcType=VARCHAR},
+      is_def = #{isDef,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
